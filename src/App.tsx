@@ -14,7 +14,7 @@ export interface CarData {
 
 export const MODELS: CarData[] = [
   { 
-    id: 'base', name: 'Raptor Base', path: '/models/ford_f150_raptor.glb', scaleMultiplier: 1.1,
+    id: 'base', name: 'Raptor Base', path: `${import.meta.env.BASE_URL}models/ford_f150_raptor.glb`, scaleMultiplier: 1.1,
     heroTitle: ['UNLEASH', 'THE BEAST.'],
     heroSubtitle: 'Discover the pinnacle of off-road performance. Engineered for the extremes. Designed to dominate any terrain.',
     sysId: 'FRD-RPT-001', carClass: 'EXTREME OFF-ROAD', status: 'OPERATIONAL',
@@ -26,7 +26,7 @@ export const MODELS: CarData[] = [
     damping: 'ELECTRONIC CONTROL', travel: '14.0" FR / 15.0" RR', gForce: 'SENSOR ARRAY ACTIVE'
   },
   { 
-    id: '2017', name: '2017 Raptor', path: '/models/2017_ford_f-150_raptor.glb', scaleMultiplier: 120,
+    id: '2017', name: '2017 Raptor', path: `${import.meta.env.BASE_URL}models/2017_ford_f-150_raptor.glb`, scaleMultiplier: 120,
     heroTitle: ['GEN-2', 'LEGEND.'],
     heroSubtitle: 'The truck that redefined the off-road landscape. A lightweight military-grade aluminum body paired with advanced suspension.',
     sysId: 'FRD-RPT-GEN2', carClass: 'TACTICAL BAJA', status: 'ARCHIVED',
@@ -38,7 +38,7 @@ export const MODELS: CarData[] = [
     damping: 'PASSIVE BYPASS', travel: '13.0" FR / 13.9" RR', gForce: 'MANUAL OVERRIDE'
   },
   { 
-    id: '2024r', name: '2024 Raptor R', path: '/models/2024_ford_f-150_raptor_r.glb', scaleMultiplier: 120,
+    id: '2024r', name: '2024 Raptor R', path: `${import.meta.env.BASE_URL}models/2024_ford_f-150_raptor_r.glb`, scaleMultiplier: 120,
     heroTitle: ['APEX', 'PREDATOR.'],
     heroSubtitle: 'The most powerful, fastest, and most extreme high-performance F-150 Raptor ever created by Ford Performance.',
     sysId: 'FRD-RPT-R', carClass: 'APEX OFF-ROAD', status: 'CLASSIFIED',
@@ -50,7 +50,7 @@ export const MODELS: CarData[] = [
     damping: 'DUAL ELECTRONIC', travel: '14.0" FR / 15.0" RR', gForce: 'ADAPTIVE MAPPING'
   },
   { 
-    id: 'police', name: 'Police Interceptor', path: '/models/ford_f150_raptor_police.glb', scaleMultiplier: 1.1,
+    id: 'police', name: 'Police Interceptor', path: `${import.meta.env.BASE_URL}models/ford_f150_raptor_police.glb`, scaleMultiplier: 1.1,
     heroTitle: ['PURSUIT', 'INTERCEPTOR.'],
     heroSubtitle: 'Tactical pursuit vehicle engineered for extreme environments. Outfitted with heavy-duty pursuit reinforcements.',
     sysId: 'FRD-INT-99', carClass: 'LAW ENFORCEMENT', status: 'ACTIVE PURSUIT',
