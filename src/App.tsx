@@ -2,7 +2,8 @@ import { Canvas } from '@react-three/fiber'
 import { Experience } from './components/Experience'
 import { OverlayUI } from './components/OverlayUI'
 import { Suspense, useState } from 'react'
-import { Loader, ScrollControls, Scroll } from '@react-three/drei'
+import { ScrollControls, Scroll } from '@react-three/drei'
+import { CustomLoader } from './components/CustomLoader'
 
 export interface CarData {
   id: string; name: string; path: string; scaleMultiplier: number;
@@ -92,10 +93,7 @@ function App() {
           </ScrollControls>
         </Suspense>
       </Canvas>
-      <Loader
-        containerStyles={{ background: '#e8e0d5' }}
-        dataInterpolation={(p) => `Loading ${p.toFixed(0)}%`}
-      />
+      <CustomLoader />
     </>
   )
 }
