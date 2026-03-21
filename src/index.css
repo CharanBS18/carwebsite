@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Mono:wght@400;700&family=Syncopate:wght@400;700&display=swap');
+
+:root {
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: #E0E5EC;
+  background-color: #0B0D17;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mono-text {
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3, h4, h5, h6, .display-font {
+  font-family: 'Syncopate', sans-serif;
+  text-transform: uppercase;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #1a1a1a 0%, #d35400 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* UI Structure for Scroll */
+.scroll-wrapper {
+  width: 100vw;
+  pointer-events: none;
+}
+
+.section-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+  color: #E0E5EC;
+  pointer-events: none;
+}
+
+/* HUD Overlay */
+.hud-brackets {
+  position: fixed;
+  top: 2rem; left: 2rem; right: 2rem; bottom: 2rem;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.3;
+}
+.hud-brackets::before, .hud-brackets::after {
+  content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid #00F0FF;
+}
+.hud-brackets::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+.hud-brackets::after { top: 0; right: 0; border-left: none; border-bottom: none; }
+
+.hud-brackets-bottom {
+  position: absolute; width: 100%; height: 100%; pointer-events: none; left: 0; top: 0;
+}
+.hud-brackets-bottom::before, .hud-brackets-bottom::after {
+  content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid #00F0FF;
+}
+.hud-brackets-bottom::before { bottom: 0; left: 0; border-right: none; border-top: none; }
+.hud-brackets-bottom::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+.telemetry-data {
+  border-left: 2px solid #00F0FF;
+  padding-left: 1.5rem;
+  margin-top: 1.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.config-selector {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  pointer-events: auto;
+}
+
+.config-btn {
+  background: rgba(11, 13, 23, 0.7);
+  backdrop-filter: blur(4px);
+  color: #00F0FF;
+  border: 1px solid #00F0FF;
+  padding: 0.6rem 1.2rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.config-btn:hover {
+  background: rgba(0, 240, 255, 0.2);
+  border-color: #00F0FF;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+.config-btn.active {
+  border-color: #00F0FF;
+  color: #0B0D17;
+  background: #00F0FF;
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+  .section-page {
+    padding: 2rem 2rem;
+  }
+}
+
+.right-align {
+  align-items: flex-end;
+  text-align: right;
+  justify-content: center;
+}
+
+/* Header */
+.overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  font-size: 1.25rem;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.nav-links p {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 0.3s;
+}
+.nav-links p:hover {
+  opacity: 1;
+}
+
+/* Hero Section */
+.hero-content {
+  margin-top: auto;
+  margin-bottom: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.right-text {
+  align-items: flex-end;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  pointer-events: auto;
+}
+
+.hero-subtitle {
+  max-width: 450px;
+  font-size: 1.125rem;
+  opacity: 0.7;
+  line-height: 1.6;
+  font-weight: 300;
+  margin-top: 1rem;
+  pointer-events: auto;
+}
+
+.tech-btn {
+  position: relative;
+  background: transparent;
+  color: #00F0FF;
+  border: 1px solid #00F0FF;
+  padding: 1rem 3rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  cursor: pointer;
+  margin-top: 2rem;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.tech-btn::before {
+  content: ''; 
+  position: absolute; 
+  top: 0; left: -100%; 
+  width: 100%; height: 100%;
+  background: #00F0FF; 
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+  z-index: -1;
+}
+
+.tech-btn:hover {
+  color: #0B0D17;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+}
+
+.tech-btn:hover::before {
+  left: 0;
+}
+
+.accent-text {
+  color: #00F0FF;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.5;
+}
+
+.scroll-text {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
