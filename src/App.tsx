@@ -76,7 +76,7 @@ function App() {
         gl={{ antialias: false, powerPreference: "high-performance" }}
         className="canvas-container"
       >
-        <color attach="background" args={['#0B0D17']} />
+        {/* <color attach="background" args={['#0B0D17']} /> */}
         <Suspense fallback={null}>
           <ScrollControls pages={3} damping={0.25} distance={1.5}>
             <Experience

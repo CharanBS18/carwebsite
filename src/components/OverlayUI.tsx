@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
 import type { CarData } from '../App'
 
 interface OverlayUIProps {
@@ -8,18 +7,18 @@ interface OverlayUIProps {
   onSelectModel: (idx: number) => void
 }
 
-const TypewriterText = ({ text, delay = 0.4 }: { text: string; delay?: number }) => {
-  const letters = text.split("")
+const MinimalistText = ({ text, delay = 0.4 }: { text: string; delay?: number }) => {
+  const words = text.split(" ")
   const container = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.02, delayChildren: delay }
+      transition: { staggerChildren: 0.05, delayChildren: delay }
     }
   }
   const child = {
-    hidden: { opacity: 0, y: 5 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 20 } }
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" as const } }
   }
   return (
     <motion.p 
@@ -27,12 +26,11 @@ const TypewriterText = ({ text, delay = 0.4 }: { text: string; delay?: number })
       initial="hidden" 
       whileInView="visible" 
       viewport={{ once: true }}
-      className="subtitle uppercase ml-2 mt-8 text-sm font-bold text-[#E0E5EC] max-w-2xl"
-      style={{ letterSpacing: '0.2em' }}
+      className="hero-subtitle"
     >
-      {letters.map((char, index) => (
-        <motion.span key={index} variants={child} style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}>
-          {char}
+      {words.map((word, index) => (
+        <motion.span key={index} variants={child} style={{ display: 'inline-block', marginRight: '0.3em' }}>
+          {word}
         </motion.span>
       ))}
     </motion.p>
@@ -44,106 +42,117 @@ export const OverlayUI = ({ models, currentIndex, onSelectModel }: OverlayUIProp
 
   return (
     <div className="scroll-wrapper">
-      {/* Global HUD Elements */}
-      <div className="hud-brackets">
-        <div className="hud-brackets-bottom"></div>
-      </div>
-
-      {/* Page 1 */}
+      
+      {/* Page 1: Overview and Config */}
       <section className="section-page">
         <header className="overlay-header">
-          <h2 className="logo pointer-events-auto">FORD RAPTOR</h2>
-          <nav className="nav-links">
+          <motion.h2 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ duration: 1.5, ease: "easeOut" as const }}
+            className="logo pointer-events-auto text-white"
+          >
+            FORD RAPTOR
+          </motion.h2>
+          <motion.nav 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" as const }}
+            className="nav-links"
+          >
             <p>Performance</p>
             <p>Design</p>
-            <p>Pre-order</p>
-          </nav>
+            <p className="accent-text">Pre-order</p>
+          </motion.nav>
         </header>
 
         <div className="hero-content">
           <motion.h1 
-            initial={{ opacity: 0, y: 60 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.1, ease: [0.25, 1, 0.5, 1] }}
-            className="title transform uppercase tracking-widest text-[#00F0FF]"
-            style={{ fontSize: '10vw', lineHeight: 0.8, fontWeight: 900, textShadow: '0 0 20px rgba(0, 240, 255, 0.4)' }}
+            transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" as const }}
+            className="hero-title text-white"
           >
             {activeModel.heroTitle[0]} <br className="lg:hidden" /> {activeModel.heroTitle[1]}
           </motion.h1>
           
-          <TypewriterText key={activeModel.id} text={activeModel.heroSubtitle} delay={0.4} />
+          <MinimalistText key={activeModel.id} text={activeModel.heroSubtitle} delay={0.4} />
           
-          {/* Telemetry data */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="telemetry-data mt-6"
-          >
-            <p><span className="accent-text">SYS.ID:</span> {activeModel.sysId}</p>
-            <p><span className="accent-text">CLASS:</span> {activeModel.carClass}</p>
-            <p><span className="accent-text">STATUS:</span> {activeModel.status}</p>
-          </motion.div>
+          <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '2rem' }}>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" as const }}
+              className="glass-panel"
+              style={{ padding: '2rem' }}
+            >
+              <p className="telemetry-label" style={{ marginBottom: '1rem' }}>CHASSIS CONFIGURATION / /</p>
+              <div className="config-selector">
+                {models.map((model, idx) => (
+                  <button 
+                    key={model.id}
+                    onClick={() => onSelectModel(idx)}
+                    className={`config-btn ${idx === currentIndex ? 'active' : ''}`}
+                  >
+                    {model.id.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="telemetry-data border-l-0"
-            style={{ borderLeft: 'none', paddingLeft: 0 }}
-          >
-            <p style={{ fontWeight: 700, marginBottom: '0.5rem' }}>SELECT CHASSIS CONFIGURATION:</p>
-            <div className="config-selector">
-              {models.map((model, idx) => (
-                <button 
-                  key={model.id}
-                  onClick={() => onSelectModel(idx)}
-                  className={`config-btn ${idx === currentIndex ? 'active' : ''}`}
-                >
-                  [{model.id.toUpperCase()}]
-                </button>
-              ))}
-            </div>
-          </motion.div>
-          
-          <motion.button 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 1.1, type: "spring", stiffness: 200 }}
-            className="tech-btn"
-            onClick={() => alert("Initializing configurator...")}
-          >
-            [ INIT COMMS ]
-          </motion.button>
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" as const }}
+              className="glass-panel telemetry-data"
+            >
+              <div className="telemetry-item">
+                <span className="telemetry-label">SYS.ID</span>
+                <span className="telemetry-value accent-text">{activeModel.sysId}</span>
+              </div>
+              <div className="telemetry-item">
+                <span className="telemetry-label">CLASS</span>
+                <span className="telemetry-value">{activeModel.carClass}</span>
+              </div>
+              <div className="telemetry-item">
+                <span className="telemetry-label">STATUS</span>
+                <span className="telemetry-value text-gradient">{activeModel.status}</span>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
 
         <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 1.8, type: "spring" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 2, delay: 1.5 }}
           className="scroll-indicator pointer-events-auto"
         >
-          <p className="scroll-text">Explore Engine</p>
-          <ChevronDown className="animate-bounce" size={20} />
+          <p className="scroll-text">Scroll to Explore</p>
+          <div className="scroll-line animate-slide"></div>
         </motion.div>
       </section>
 
-      {/* Page 2 */}
+      {/* Page 2: Engine Performance */}
       <section className="section-page right-align">
-        <div className="hero-content right-text">
+        <div className="hero-content right-text" style={{ marginTop: 'auto', marginBottom: '10rem' }}>
           <motion.h2 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="hero-title display-font text-right"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" as const }}
+            className="hero-title text-right text-white"
+            style={{ fontSize: 'clamp(2rem, 6vw, 5rem)' }}
           >
-            {activeModel.engineTitle[0]} <br/> {activeModel.engineTitle[1]}
+            {activeModel.engineTitle[0]} <br/> <span className="text-gradient">{activeModel.engineTitle[1]}</span>
           </motion.h2>
+          
           <motion.p 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 1.5, delay: 0.4, ease: "easeOut" as const }}
             className="hero-subtitle text-right mt-4"
           >
             {activeModel.engineDesc}
@@ -152,32 +161,52 @@ export const OverlayUI = ({ models, currentIndex, onSelectModel }: OverlayUIProp
           <motion.div 
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-            className="telemetry-data text-right inline-block ml-auto mt-6 border-left-0 border-r-2"
-            style={{ borderLeft: 'none', borderRight: '2px solid #00F0FF', paddingLeft: 0, paddingRight: '1.5rem'}}
+            transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" as const }}
+            className="glass-panel telemetry-data mt-8"
           >
-            <p><span className="accent-text">PWR_OUT:</span> {activeModel.pwrOut}</p>
-            <p><span className="accent-text">TRQ_OUT:</span> {activeModel.trqOut}</p>
-            <p><span className="accent-text">ENG_TYP:</span> {activeModel.engType}</p>
+            <div className="telemetry-item">
+              <span className="telemetry-label">PWR_OUT</span>
+              <span className="telemetry-value text-white">{activeModel.pwrOut}</span>
+            </div>
+            <div className="telemetry-item">
+              <span className="telemetry-label">TRQ_OUT</span>
+              <span className="telemetry-value text-white">{activeModel.trqOut}</span>
+            </div>
+            <div className="telemetry-item">
+              <span className="telemetry-label">ENG_TYP</span>
+              <span className="telemetry-value accent-text">{activeModel.engType}</span>
+            </div>
           </motion.div>
+          
+          <motion.button 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5, delay: 1 }}
+            className="tech-btn mt-8"
+            onClick={() => alert("Initializing configurator...")}
+          >
+            Configure Performance
+          </motion.button>
         </div>
       </section>
 
-      {/* Page 3 */}
+      {/* Page 3: Suspension / Chassis */}
       <section className="section-page">
         <div className="hero-content">
           <motion.h2 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="hero-title display-font"
-          >
-            {activeModel.suspensionTitle[0]} <br/> {activeModel.suspensionTitle[1]}
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+            transition={{ duration: 1.5, ease: "easeOut" as const }}
+            className="hero-title text-white"
+            style={{ fontSize: 'clamp(2rem, 6vw, 5rem)' }}
+          >
+            {activeModel.suspensionTitle[0]} <br/> <span className="text-gradient">{activeModel.suspensionTitle[1]}</span>
+          </motion.h2>
+          
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5, delay: 0.4, ease: "easeOut" as const }}
             className="hero-subtitle mt-4"
           >
             {activeModel.suspensionDesc}
@@ -186,35 +215,34 @@ export const OverlayUI = ({ models, currentIndex, onSelectModel }: OverlayUIProp
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-            className="telemetry-data mt-6"
+            transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
+            className="glass-panel telemetry-data mt-8"
           >
-            <p><span className="accent-text">DAMPING:</span> {activeModel.damping}</p>
-            <p><span className="accent-text">TRAVEL:</span> {activeModel.travel}</p>
-            <p><span className="accent-text">G_FORCE:</span> {activeModel.gForce}</p>
+            <div className="telemetry-item">
+              <span className="telemetry-label">DAMPING</span>
+              <span className="telemetry-value text-white">{activeModel.damping}</span>
+            </div>
+            <div className="telemetry-item">
+              <span className="telemetry-label">TRAVEL</span>
+              <span className="telemetry-value text-white">{activeModel.travel}</span>
+            </div>
+            <div className="telemetry-item">
+              <span className="telemetry-label">G_FORCE</span>
+              <span className="telemetry-value accent-text">{activeModel.gForce}</span>
+            </div>
           </motion.div>
 
-          <div className="content-block mt-16 text-center flex flex-col items-center justify-center">
+          <div className="content-block mt-24 flex flex-col items-center justify-center w-full" style={{ opacity: 0.2 }}>
             <motion.h2 
-              initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              className="title uppercase tracking-widest text-[#00F0FF]"
-              style={{ fontSize: '6vw', fontWeight: 900, textShadow: '0 0 15px rgba(0, 240, 255, 0.5)' }}
+              initial={{ opacity: 0, filter: "blur(20px)" }}
+              whileInView={{ opacity: 1, filter: "blur(0px)" }}
+              transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+              className="logo text-center"
+              style={{ fontSize: '8vw', letterSpacing: '0.15em' }}
             >
-              THE ULTIMATE<br/>PREDATOR
+              FORD PERFORMANCE
             </motion.h2>
-            <motion.button 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5, type: "spring", stiffness: 300, damping: 20 }}
-              className="tech-btn"
-              onClick={() => alert("Pre-order placed!")}
-            >
-              [ EXECUTE OVERRIDE ]
-            </motion.button>
           </div>
-
         </div>
       </section>
     </div>
