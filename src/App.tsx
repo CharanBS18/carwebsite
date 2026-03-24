@@ -4,6 +4,7 @@ import { OverlayUI } from './components/OverlayUI'
 import { Suspense, useState } from 'react'
 import { ScrollControls, Scroll } from '@react-three/drei'
 import { CustomLoader } from './components/CustomLoader'
+import { LampBackground } from './components/LampBackground'
 
 export interface CarData {
   id: string; name: string; path: string; scaleMultiplier: number;
@@ -69,11 +70,12 @@ function App() {
 
   return (
     <>
+      <LampBackground />
       <Canvas
         shadows
         camera={{ position: [0, 2, 8], fov: 45 }}
         dpr={[1, 1]}
-        gl={{ antialias: false, powerPreference: "high-performance" }}
+        gl={{ antialias: false, powerPreference: "high-performance", alpha: true }}
         className="canvas-container"
       >
         {/* <color attach="background" args={['#0B0D17']} /> */}

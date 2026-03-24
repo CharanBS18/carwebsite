@@ -29,6 +29,13 @@ html, body, #root {
   overflow: hidden;
 }
 
+.canvas-container {
+  position: relative !important;
+  z-index: 1;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
 /* Typography Scale */
 .mono-text, .telemetry-label {
   font-family: 'Space Grotesk', monospace;
@@ -341,6 +348,70 @@ h1, h2, h3, h4, h5, h6, .display-font, .logo {
   overflow: hidden;
 }
 
+/* Retro Grid Background Classes */
+.retro-bg-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; /* Behind canvas */
+  background-color: #050505;
+  overflow: hidden;
+}
+
+.retro-radial-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse 50% 80% at 50% -20%, rgba(120, 119, 198, 0.3), transparent);
+  z-index: 1;
+}
+
+.retro-grid-container {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  perspective: 200px;
+  opacity: var(--opacity);
+  z-index: 2;
+}
+
+.retro-grid-plane {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(var(--grid-angle));
+}
+
+.animate-grid {
+  background-image: 
+    linear-gradient(to right, var(--dark-line) 1px, transparent 0),
+    linear-gradient(to bottom, var(--dark-line) 1px, transparent 0);
+  background-repeat: repeat;
+  background-size: var(--cell-size) var(--cell-size);
+  height: 300vh;
+  inset: 0% 0px;
+  margin-left: -200%;
+  transform-origin: 100% 0 0;
+  width: 600vw;
+  animation: grid-scroll 2s linear infinite;
+}
+
+.retro-grid-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #050505 10%, transparent 90%);
+}
+
+@keyframes grid-scroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(calc(var(--cell-size) * 1)); }
+}
+
 .loader {
   overflow: hidden;
   position: relative;
@@ -404,3 +475,145 @@ h1, h2, h3, h4, h5, h6, .display-font, .logo {
   text-transform: uppercase;
 }
 
+/* Lamp Background */
+.lamp-bg-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #020617;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.lamp-core {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  isolation: isolate;
+  transform: scaleY(1.25);
+  padding-top: 2rem;
+}
+
+.lamp-beam {
+  position: absolute;
+  inset: auto;
+  height: 14rem;
+  width: 30rem;
+  color: #ffffff;
+  background-image: conic-gradient(var(--conic-position), var(--tw-gradient-stops));
+  overflow: visible;
+}
+
+.lamp-beam-left {
+  right: 50%;
+  --tw-gradient-stops: rgb(6 182 212), transparent, transparent;
+  --conic-position: from 70deg at center top;
+}
+
+.lamp-beam-right {
+  left: 50%;
+  --tw-gradient-stops: transparent, transparent, rgb(6 182 212);
+  --conic-position: from 290deg at center top;
+}
+
+.lamp-mask {
+  position: absolute;
+  bottom: 0;
+  z-index: 20;
+  background: #020617;
+}
+
+.lamp-mask-bottom {
+  right: 0;
+  left: 0;
+  height: 10rem;
+  mask-image: linear-gradient(to top, white, transparent);
+  -webkit-mask-image: linear-gradient(to top, white, transparent);
+}
+
+.lamp-mask-side-left {
+  left: 0;
+  width: 10rem;
+  height: 100%;
+  mask-image: linear-gradient(to right, white, transparent);
+  -webkit-mask-image: linear-gradient(to right, white, transparent);
+}
+
+.lamp-mask-side-right {
+  right: 0;
+  width: 10rem;
+  height: 100%;
+  mask-image: linear-gradient(to left, white, transparent);
+  -webkit-mask-image: linear-gradient(to left, white, transparent);
+}
+
+.lamp-floor-blur {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 12rem;
+  transform: translateY(3rem) scaleX(1.5);
+  background: #020617;
+  filter: blur(40px);
+}
+
+.lamp-backdrop-blur {
+  position: absolute;
+  top: 50%;
+  z-index: 50;
+  width: 100%;
+  height: 12rem;
+  background: transparent;
+  opacity: 0.1;
+  backdrop-filter: blur(12px);
+}
+
+.lamp-glow-main {
+  position: absolute;
+  inset: auto;
+  z-index: 50;
+  width: 28rem;
+  height: 9rem;
+  transform: translateY(-50%);
+  border-radius: 9999px;
+  background: rgb(6 182 212);
+  opacity: 0.5;
+  filter: blur(48px);
+}
+
+.lamp-glow-small {
+  position: absolute;
+  inset: auto;
+  z-index: 30;
+  width: 16rem;
+  height: 9rem;
+  transform: translateY(-6rem);
+  border-radius: 9999px;
+  background: rgb(34 211 238);
+  filter: blur(32px);
+}
+
+.lamp-line {
+  position: absolute;
+  inset: auto;
+  z-index: 50;
+  width: 30rem;
+  height: 2px;
+  transform: translateY(-7rem);
+  background: rgb(34 211 238);
+}
+
+.lamp-cutoff {
+  position: absolute;
+  inset: auto;
+  z-index: 40;
+  width: 100%;
+  height: 11rem;
+  transform: translateY(-12.5rem);
+  background: #020617;
+}

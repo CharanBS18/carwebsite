@@ -1,4 +1,4 @@
-import { Environment, ContactShadows, PresentationControls, Float, useScroll } from '@react-three/drei'
+import { Environment, PresentationControls, Float, useScroll } from '@react-three/drei'
 import { Suspense, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -8,6 +8,10 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing'
 export const Experience = ({ modelPath, scaleMultiplier = 1 }: { modelPath: string, scaleMultiplier?: number }) => {
   const scroll = useScroll()
   const carRef = useRef<THREE.Group>(null)
+  const isBaseModel =
+    modelPath.includes('ford_f150_raptor.glb') && !modelPath.includes('ford_f150_raptor_police.glb')
+  const isPoliceModel = modelPath.includes('ford_f150_raptor_police.glb')
+  const is2017Model = modelPath.includes('2017_ford_f-150_raptor.glb')
 
   useFrame((_, delta) => {
     if (carRef.current && scroll) {
@@ -33,11 +37,17 @@ export const Experience = ({ modelPath, scaleMultiplier = 1 }: { modelPath: stri
 
   return (
     <>
-      <color attach="background" args={['#0B0D17']} />
-      
       <ambientLight intensity={0.2} color="#ffffff" />
-      <directionalLight position={[5, 10, 5]} intensity={3} color="#00F0FF" />
-      <directionalLight position={[-5, 5, -5]} intensity={3} color="#B026FF" />
+      <directionalLight
+        position={[5, 10, 5]}
+        intensity={isBaseModel ? 3 : isPoliceModel ? 1.5 : is2017Model ? 2.0 : 2.3}
+        color={isBaseModel ? '#00F0FF' : '#58d4ff'}
+      />
+      <directionalLight
+        position={[-5, 5, -5]}
+        intensity={isBaseModel ? 3 : isPoliceModel ? 1.5 : is2017Model ? 2.0 : 2.3}
+        color={isBaseModel ? '#B026FF' : '#ab78ff'}
+      />
       <spotLight position={[0, 15, 0]} angle={0.5} penumbra={1} intensity={4} color="#ffffff" />
       
       <Environment preset="night" blur={0.4} />
@@ -52,8 +62,6 @@ export const Experience = ({ modelPath, scaleMultiplier = 1 }: { modelPath: stri
           <Suspense fallback={null}>
             <group ref={carRef} scale={1.5 * scaleMultiplier} position={[0, -1.0, 0]}>
               <CarModel modelPath={modelPath} />
-              {/* Bake the shadow once for massive performance. Lower resolution to 256 for older GPUs */}
-              <ContactShadows opacity={0.8} scale={15} blur={2.5} far={4} color="#000000" frames={1} resolution={256} />
             </group>
           </Suspense>
         </Float>
